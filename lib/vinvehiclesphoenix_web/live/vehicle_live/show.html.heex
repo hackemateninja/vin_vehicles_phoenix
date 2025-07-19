@@ -1,0 +1,13 @@
+<.header>
+  Vehicle {@vehicle.id}
+  <:subtitle>This is a vehicle record from your database.</:subtitle>
+</.header>
+
+<.list>
+  <:item title="Make">{@vehicle.make}</:item>
+  <:item title="Vin">{@vehicle.vin}</:item>
+  <:item title="Model">{@vehicle.model}</:item>
+  <:item title="Age">{@vehicle.age}</:item>
+</.list>
+
+<.back navigate={~p"/"}>Back to vehicles</.back>

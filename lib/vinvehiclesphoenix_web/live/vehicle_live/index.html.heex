@@ -1,0 +1,43 @@
+<.header>
+  Listing Vehicles
+  <:actions>
+    <.link patch={~p"/new"}>
+      <.button>New Vehicle</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="vehicles"
+  rows={@streams.vehicles}
+  row_click={fn {_id, vehicle} -> JS.navigate(~p"/#{vehicle}") end}
+>
+  <:col :let={{_id, vehicle}} label="Make">{vehicle.make}</:col>
+  <:col :let={{_id, vehicle}} label="Vin">{vehicle.vin}</:col>
+  <:col :let={{_id, vehicle}} label="Model">{vehicle.model}</:col>
+  <:col :let={{_id, vehicle}} label="Age">{vehicle.age}</:col>
+  <:action :let={{_id, vehicle}}>
+    <div class="sr-only">
+      <.link navigate={~p"/#{vehicle}"}>Show</.link>
+    </div>
+  </:action>
+  <:action :let={{id, vehicle}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: vehicle.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new]} id="vehicle-modal" show on_cancel={JS.patch(~p"/")}>
+  <.live_component
+    module={VinvehiclesphoenixWeb.VehicleLive.FormComponent}
+    id={@vehicle.id || :new}
+    title={@page_title}
+    action={@live_action}
+    vehicle={@vehicle}
+    patch={~p"/"}
+  />
+</.modal>
